@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard CSS Puro</title>
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+
+        :root {
+            --primary: #4e73df;
+            --secondary: #858796;
+            --success: #1cc88a;
+            --info: #36b9cc;
+            --warning: #f6c23e;
+            --danger: #e74a3b;
+            --bg-color: #f8f9fc;
+            --white: #ffffff;
+            --text-dark: #5a5c69;
+            --sidebar-w: 250px;
+            --sidebar-w-collapsed: 70px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+   
+        #nav-toggle { display: none; }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: linear-gradient(180deg, var(--primary) 10%, #224abe 100%);
+            position: fixed;
+            left: 0; top: 0;
+            z-index: 100;
+            transition: width 0.3s;
+            color: #fff;
+            overflow-y: auto; /* Permite scroll se menu for alto */
+        }
+
+        .sidebar-brand {
+            height: 70px;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-brand i { margin-right: 10px; font-size: 1.5rem; }
+
+        .sidebar-menu { list-style: none; margin-top: 1rem; }
+        
+        .sidebar-menu li { width: 100%; }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border-left: 4px solid #fff;
+        }
+        
+        .sidebar-menu a i { font-size: 1.2rem; padding-right: 1rem; }
+
+       
+        .main-content {
+            margin-left: var(--sidebar-w);
+            transition: margin-left 0.3s;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #fff;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        /* Botão do Menu (Label para o checkbox) */
+        .menu-btn {
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .user-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-wrapper img {
+            width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ccc;
+        }
+
+        /* Quando marcado no Desktop: Recolhe */
+        #nav-toggle:checked ~ .sidebar {
+            width: var(--sidebar-w-collapsed);
+        }
+
+        #nav-toggle:checked ~ .sidebar .sidebar-brand h2,
+        #nav-toggle:checked ~ .sidebar .sidebar-menu li a span {
+            display: none;
+        }
+
+        #nav-toggle:checked ~ .sidebar .sidebar-brand i,
+        #nav-toggle:checked ~ .sidebar .sidebar-menu a i {
+            margin-right: 0;
+            padding-right: 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        #nav-toggle:checked ~ .main-content {
+            margin-left: var(--sidebar-w-collapsed);
+        }
+
+        /*  Dashboard Cards  */
+        .content { padding: 2rem; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-single {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            border-left: 5px solid var(--primary);
+        }
+        .card-single.success { border-left-color: var(--success); }
+        .card-single.warning { border-left-color: var(--warning); }
+        .card-single.danger { border-left-color: var(--danger); }
+
+        .card-info h1 { font-size: 1.5rem; color: #333; }
+        .card-info span { font-size: 0.9rem; color: var(--secondary); text-transform: uppercase; }
+        .card-icon { font-size: 2rem; color: #ddd; }
+
+        /* Grids dos Gráficos CSS */
+        .recent-grid {
+            display: grid;
+            grid-template-columns: 65% auto;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-body { padding: 1rem; }
+
+        /* --- Gráfico de Barras CSS --- */
+        .chart-wrap {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-top: 20px;
+        }
+        .bar-item {
+            width: 8%;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+            position: relative;
+            transition: 0.3s;
+            opacity: 0.8;
+        }
+        .bar-item:hover { opacity: 1; transform: scaleY(1.05); transform-origin: bottom; }
+     
+        .bar-item:hover::after {
+            content: attr(data-val);
+            position: absolute;
+            top: -25px; left: 50%;
+            transform: translateX(-50%);
+            background: #333; color: #fff;
+            padding: 2px 5px; font-size: 10px; border-radius: 3px;
+        }
+
+        /* --- Gráfico de Pizza--- */
+        .donut-chart-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .donut-chart {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary) 0deg 198deg, 
+                var(--success) 198deg 306deg, 
+                var(--info) 306deg 360deg
+            );
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* O buraco da rosca */
+        .donut-chart::before {
+            content: "";
+            position: absolute;
+            width: 100px; height: 100px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .donut-text { position: relative; z-index: 2; font-weight: bold; }
+        
+        .donut-legend {
+            margin-top: 1rem;
+            display: flex; gap: 10px; font-size: 0.8rem;
+        }
+        .legend-dot { width: 10px; height: 10px; display: inline-block; border-radius: 50%; margin-right: 3px; }
+
+        /* Tabela */
+        table { width: 100%; border-collapse: collapse; }
+        thead tr { border-top: 1px solid #f0f0f0; border-bottom: 2px solid #f0f0f0; }
+        td { padding: 0.5rem 0.5rem; font-size: 0.9rem; color: #222; }
+        tr:not(:first-child) { border-bottom: 1px solid #f0f0f0; }
+        .status { padding: 2px 5px; border-radius: 3px; font-size: 0.7rem; }
+        .paid { background: #c8e6c9; color: #1b5e20; }
+        .pending { background: #ffecb3; color: #ff6f00; }
+        .failed { background: #ffcdd2; color: #b71c1c; }
+
+      
+
+        
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="nav-toggle">
+
+    <!-- MENU LATERAL -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-bolt"></i>
+            <h2>GameVerse</h2>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="#"><i class="fas fa-users"></i><span>Clientes</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-bar"></i><span>Analytics</span></a></li>
+            <li><a href="#"><i class="fas fa-clipboard-list"></i><span>Projetos</span></a></li>
+            <li><a href="#"><i class="fas fa-shopping-bag"></i><span>Vendas</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i><span>Ajustes</span></a></li>
+        </ul>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content">
+        <header>
+            <!-- botão para o checkbox -->
+            <label for="nav-toggle" class="menu-btn">
+                <i class="fas fa-bars"></i>
+            </label>
+
+            <div class="user-wrapper">
+                <img src="https://avatar.iran.liara.run/public/boy" alt="User">
+                <div>
+                    <h4>Hugo Garcia</h4>
+                    <small>Admin</small>
+                </div>
+            </div>
+        </header>
+
+        <main class="content">
+            <!-- CARDS -->
+            <div class="cards">
+                <div class="card-single">
+                    <div class="card-info">
+                        <h1>54</h1>
+                        <span>Clientes</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-users" style="color: var(--primary)"></i></div>
+                </div>
+                <div class="card-single success">
+                    <div class="card-info">
+                        <h1>R$ 75k</h1>
+                        <span>Receita</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-dollar-sign" style="color: var(--success)"></i></div>
+                </div>
+                <div class="card-single warning">
+                    <div class="card-info">
+                        <h1>12</h1>
+                        <span>Pendentes</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-tasks" style="color: var(--warning)"></i></div>
+                </div>
+                <div class="card-single danger">
+                    <div class="card-info">
+                        <h1>5</h1>
+                        <span>Alertas</span>
+                    </div>
+                    <div class="card-icon"><i class="fas fa-comments" style="color: var(--danger)"></i></div>
+                </div>
+            </div>
+
+            <!-- GRÁFICOS E TABELAS -->
+            <div class="recent-grid">
+                
+                <!-- Gráfico de Barras CSS -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Faturamento Anual</h3>
+                        <button style="border:none; background:transparent; cursor:pointer;"><i class="fas fa-ellipsis-h"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrap">
+                            <!-- Barras Jan a Dez -->
+                            <div class="bar-item" style="height: 30%;" data-val="Jan"></div>
+                            <div class="bar-item" style="height: 45%;" data-val="Fev"></div>
+                            <div class="bar-item" style="height: 25%;" data-val="Mar"></div>
+                            <div class="bar-item" style="height: 60%;" data-val="Abr"></div>
+                            <div class="bar-item" style="height: 50%;" data-val="Mai"></div>
+                            <div class="bar-item" style="height: 75%;" data-val="Jun"></div>
+                            <div class="bar-item" style="height: 90%;" data-val="Jul"></div>
+                            <div class="bar-item" style="height: 65%;" data-val="Ago"></div>
+                            <div class="bar-item" style="height: 55%;" data-val="Set"></div>
+                            <div class="bar-item" style="height: 80%;" data-val="Out"></div>
+                            <div class="bar-item" style="height: 95%;" data-val="Nov"></div>
+                            <div class="bar-item" style="height: 85%;" data-val="Dez"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráfico Rosca CSS -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Dispositivos</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="donut-chart-block">
+                            <div class="donut-chart">
+                                <div class="donut-text">Total</div>
+                            </div>
+                            <div class="donut-legend">
+                                <div><span class="legend-dot" style="background:var(--primary)"></span>Computador 40%</div>
+                                <div><span class="legend-dot" style="background:var(--success)"></span>Android 45%</div>
+                                <div><span class="legend-dot" style="background:var(--info)"></span>iOS 15%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Tabela Simples -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Vendas Recentes</h3>
+                    <button style="background:var(--primary); color:#fff; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">Ver Tudo</button>
+                </div>
+                <div class="card-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Produto</td>
+                                <td>Preço</td>
+                                <td>Status</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Chave de ativação Windows 11 pro</td>
+                                <td>R$ 1.200</td>
+                                <td><span class="status paid">Pago</span></td>
+                            </tr>
+                            <tr>
+                                <td>Chave de ativação jogos</td>
+                                <td>R$ 800</td>
+                                <td><span class="status pending">Pendente</span></td>
+                            </tr>
+                            <tr>
+                                <td>Hospedagem/servidor para jogos</td>
+                                <td>R$ 150</td>
+                                <td><span class="status failed">Falha</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
